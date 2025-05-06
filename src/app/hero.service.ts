@@ -1,19 +1,65 @@
 import { Injectable } from '@angular/core';
-import { Hero } from './hero';
-import { HEROES } from './mock-heroes';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Hero } from './hero';
 import { MessageService } from './message.service';
+
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeroService {
 
-  constructor(private messageService: MessageService) { }
+  private heroesUrl = 'api/heroes';
+
+  httpOptions = {
+    headers: new HttpHeaders({'Content-Type':'application/json'})
+  };
+
+  constructor(private http: HttpClient,
+    private messageService: MessageService) { }
+
+  private log(message: string) {
+    this.messageService.add(`HeroService: ${message}`);
+  }
 
   getHeroes(): Observable<Hero[]> {
-    const heroes = of(HEROES);
-    this.messageService.add('HeroService: fetched heroes.')
-    return heroes;
+    return this.http.get<Hero[]>(this.heroesUrl)
+  .pipe(
+    tap(()=> this.log('fetched heroes')),
+    catchError(this.handleError<Hero[]>('getHeroes', []))
+  );
+  }
+
+
+  getHeroNo404<Data>(id:number): Observable<Hero> {
+    const url = `${this.heroesUrl}/?id=${id}`;
+    return this.http.get<Hero[]>(url, {responseType: 'json'})
+    .pipe(
+      map(heroes => heroes[0]),tap(h => {const outcome = h ? 'fetched' : 'did not find';this.log(`${outcome} hero id=${id}`);}),catchError(this.handleError<Hero>(`getHero id=${id}`)));
+  }
+
+  getHero(id: number): Observable<Hero> {
+    const url = `${this.heroesUrl}/${id}`;
+    return this.http.get<Hero>(url,{responseType: 'json'}).pipe(tap(_ => this.log(`fetched hero id=${id}`)), catchError(this.handleError<Hero>(`getHero id=${id}`)));
+  }
+
+  serachHeroes(term: string): Observable<Hero[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+
+    return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(tap(x => x.length ? this.log(`found heroes matching ${term}`) : this.log(`no heroes matching ${term}`)))
+  }
+
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error:any): Observable<T> => {
+      console.error(error);
+      this.log(`${operation} failed: ${error.message}`);
+      return of(result as T);
+    }
   }
 }
