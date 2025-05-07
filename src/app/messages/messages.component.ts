@@ -11,4 +11,5 @@ import { NgFor, CommonModule } from '@angular/common';
 })
 export class MessagesComponent {
   constructor(public messageService: MessageService) {}
+  debug=true
 }

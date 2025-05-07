@@ -31,7 +31,7 @@ export class HeroService {
   .pipe(
     tap(()=> this.log('fetched heroes')),
     catchError(this.handleError<Hero[]>('getHeroes', []))
-  );
+    );
   }
 
 
@@ -39,21 +39,34 @@ export class HeroService {
     const url = `${this.heroesUrl}/?id=${id}`;
     return this.http.get<Hero[]>(url, {responseType: 'json'})
     .pipe(
-      map(heroes => heroes[0]),tap(h => {const outcome = h ? 'fetched' : 'did not find';this.log(`${outcome} hero id=${id}`);}),catchError(this.handleError<Hero>(`getHero id=${id}`)));
+      map(heroes => heroes[0]),
+      tap(h => {const outcome = h ? 'fetched' : 'did not find';this.log(`${outcome} hero id=${id}`);}),
+      catchError(this.handleError<Hero>(`getHero id=${id}`))
+      );
   }
 
   getHero(id: number): Observable<Hero> {
     const url = `${this.heroesUrl}/${id}`;
-    return this.http.get<Hero>(url,{responseType: 'json'}).pipe(tap(_ => this.log(`fetched hero id=${id}`)), catchError(this.handleError<Hero>(`getHero id=${id}`)));
+    return this.http.get<Hero>(url,{responseType: 'json'})
+    .pipe(
+      tap(_ => this.log(`fetched hero id=${id}`)), 
+      catchError(this.handleError<Hero>(`getHero id=${id}`))
+    );
   }
 
   updateHero(hero:Hero): Observable<any> {
-    return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(tap(() => this.log(`Updated hero id=${hero.id}`)))
+    return this.http.put(this.heroesUrl, hero, this.httpOptions)
+    .pipe(
+      tap(() => this.log(`Updated hero id=${hero.id}`))
+    )
   }
 
   addHero(hero:Hero): Observable<Hero> {
-    return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions).pipe(tap((newHero:Hero)=>this.log(`added hero w/ id=${newHero.id}`)),
-  catchError(this.handleError<Hero>('addHero')))
+    return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions)
+    .pipe(
+      tap((newHero:Hero)=>this.log(`added hero w/ id=${newHero.id}`)),
+      catchError(this.handleError<Hero>('addHero'))
+    )
   }
 
   deleteHero(id:number): Observable<Hero> {

@@ -14,6 +14,14 @@
   left: .1em;
 }
 
+.heroes button {
+  margin: .5em;
+  padding: .3em 0;
+  height: 1.6em;
+  width: 1.6em;
+  border-radius: 4px;
+}
+
 .heroes a {
   color: #333;
   text-decoration: none;

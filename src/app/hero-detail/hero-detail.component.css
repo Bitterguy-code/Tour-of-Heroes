@@ -1,4 +1,9 @@
 /* HeroDetailComponent's private CSS styles */
+.ID {
+  color: #435960;
+  font-weight: bold;
+  float: left;
+}  
 label {
     color: #435960;
     font-weight: bold;
