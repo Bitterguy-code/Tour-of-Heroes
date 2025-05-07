@@ -1,4 +1,4 @@
-import { Component,Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgIf, UpperCasePipe, Location } from '@angular/common';
 import { HeroService } from '../hero.service';
 import { Hero } from '../hero';
