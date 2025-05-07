@@ -25,6 +25,8 @@ export class HeroSearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.heroes$ = this.serachTerms.pipe(debounceTime(300), distinctUntilChanged(), switchMap((term:string) => this.heroService.serachHeroes(term)))
+    this.heroes$ = this.serachTerms.pipe(debounceTime(300), 
+                                        distinctUntilChanged(), 
+                                        switchMap((term:string) => this.heroService.serachHeroes(term)))
   }
 }
