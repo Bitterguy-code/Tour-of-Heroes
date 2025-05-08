@@ -6,6 +6,7 @@ import { HeroSearchComponent } from '../hero-search/hero-search.component';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CityService } from '../city.service';
+import { UtilityService } from '../utility.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,21 +20,11 @@ export class DashboardComponent implements OnInit{
   cities: City[] = [];
 
   constructor(
-    private heroService: HeroService,
-    private cityService: CityService
+    private utilityService: UtilityService
   ) {}
 
   ngOnInit(): void {
-    this.getHeroes();
-    this.getCities();
-  }
-
-  getHeroes(): void {
-    this.heroService.getHeroes().subscribe(heroes => this.heroes = heroes.slice(0,4));
-  }
-
-  getCities(): void {
-    console.log("cities")
-    this.cityService.getCities().subscribe(city => this.cities = city);
+    this.utilityService.getHeroes();
+    this.utilityService.getCities();
   }
 }
