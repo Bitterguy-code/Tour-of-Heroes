@@ -2,7 +2,10 @@
 <div>
     <label for="new-hero">Hero name:</label>
     <input id="new-hero" #heroName />
-    <button type="button" class="add-button" (click)="add(heroName.value);heroName.value=''">Add hero</button>
+    <label for="new-hero">Hero City:</label>
+    <!-- TODO: Make this a dropdown of available cities -->
+     <input id="new-hero" #heroCity />
+    <button type="button" class="add-button" (click)="add(heroName.value, heroCity.value);heroName.value=''">Add hero</button>
 </div>
 <ul class="heroes">
     <li *ngFor="let hero of heroes" >

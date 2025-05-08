@@ -16,18 +16,21 @@ export class HeroService {
     headers: new HttpHeaders({'Content-Type':'application/json'})
   };
 
-  constructor(private http: HttpClient,
-    private messageService: MessageService) { }
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService
+  ) {}
 
   private log(message: string) {
+    console.log(message);
     this.messageService.add(`HeroService: ${message}`);
   }
 
   getHeroes(): Observable<Hero[]> {
     return this.http.get<Hero[]>(this.heroesUrl)
-  .pipe(
-    tap(()=> this.log('fetched heroes')),
-    catchError(this.handleError<Hero[]>('getHeroes', []))
+    .pipe(
+      tap(()=> this.log('fetched heroes')),
+      catchError(this.handleError<Hero[]>('getHeroes', []))
     );
   }
 
@@ -52,13 +55,16 @@ export class HeroService {
   }
 
   updateHero(hero:Hero): Observable<any> {
-    return this.http.put(this.heroesUrl, hero, this.httpOptions)
+    const what = this.http.put(this.heroesUrl, hero, this.httpOptions)
     .pipe(
       tap(() => this.log(`Updated hero id=${hero.id}`))
     )
+    console.log(what)
+    return what;
   }
 
   addHero(hero:Hero): Observable<Hero> {
+    console.log('hello')
     return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions)
     .pipe(
       tap((newHero:Hero)=>this.log(`added hero w/ id=${newHero.id}`)),
@@ -82,8 +88,7 @@ export class HeroService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error:any): Observable<T> => {
-      console.error(error);
-      this.log(`${operation} failed: ${error.message}`);
+      this.log(`${operation} failed: ${error}`);
       return of(result as T);
     }
   }

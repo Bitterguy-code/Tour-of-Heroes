@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HeroService } from '../hero.service';
+import { throwError } from 'rxjs';
 
 
 @Component({
@@ -26,10 +27,30 @@ export class HeroesComponent {
     this.heroService.getHeroes().subscribe(heroes => this.heroes = heroes);
   }
 
-  add(name: string): void {
+  add(name: string, city: string): void {
     name = name.trim();
-    if (!name) {return;}
-    this.heroService.addHero({name} as Hero).subscribe(hero => {this.heroes.push(hero);});
+    let cityID = parseInt(city)
+    if (name && cityID) {
+      let dupe = false
+      for (let hero in this.heroes) {
+        if (this.heroes[hero].name === name){
+          dupe = true
+        }
+      }
+      if (!dupe){
+        this.heroService.addHero({name:name, city:cityID} as Hero).subscribe(hero => this.heroes.push(hero));
+      } else {
+        throw new Error(`Hero ${name} already exist!`)
+      }
+    } else {
+      if (!name) {
+        throw new Error(`No name entered`)
+      }
+
+      if (!city) {
+        throw new Error('No city entered')
+      }
+    }
   }
 
   delete(hero:Hero): void {
