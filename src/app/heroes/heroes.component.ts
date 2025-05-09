@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HeroService } from '../hero.service';
-import { UtilityService } from '../utility.service';
+import { throwError } from 'rxjs';
 
 
 @Component({
@@ -17,13 +17,14 @@ import { UtilityService } from '../utility.service';
 export class HeroesComponent {
   heroes: Hero[] = [];
 
-  constructor(
-    private heroService:HeroService,
-    private utilityService: UtilityService
-  ){}
+  constructor(private heroService:HeroService){}
 
   ngOnInit():void {
-    this.utilityService.getHeroes();
+    this.getHeroes();
+  }
+
+  getHeroes(): void {
+    this.heroService.getHeroes().subscribe(heroes => this.heroes = heroes);
   }
 
   add(name: string, city: string): void {

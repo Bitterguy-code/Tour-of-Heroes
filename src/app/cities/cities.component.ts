@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { City } from '../city';
-import { Hero } from '../hero';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { UtilityService } from '../utility.service';
+import { CityService } from '../city.service';
 
 @Component({
   selector: 'app-cities',
@@ -14,21 +13,14 @@ import { UtilityService } from '../utility.service';
 })
 export class CitiesComponent {
   cities: City[] =[];
-  heroes: Hero[] =[];
-  constructor(
-    private utilityService: UtilityService
-  ){}
+  constructor(private cityService:CityService){}
 
   ngOnInit(): void {
-    this.utilityService.getCities();
-    this.utilityService.getHeroes();
+    this.getCities();
   }
 
-  add(name:string): void {
-    name = name.trim();
-    if (name) {
-      let dupe = false;
-
-    }
+  getCities(): void {
+    console.log("hewwo")
+    this.cityService.getCities().subscribe(cities => this.cities = cities);
   }
 }
