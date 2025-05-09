@@ -3,13 +3,16 @@
     <label for="new-hero">Hero name:</label>
     <input id="new-hero" #heroName />
     <label for="new-hero">Hero City:</label>
-    <!-- TODO: Make this a dropdown of available cities -->
-     <input id="new-hero" #heroCity />
+     <select id="new-hero" #heroCity>
+        <option *ngFor="let city of cities">
+            {{city.name}}
+        </option>
+     </select>
     <button type="button" class="add-button" (click)="add(heroName.value, heroCity.value);heroName.value=''">Add hero</button>
 </div>
 <ul class="heroes">
     <li *ngFor="let hero of heroes" >
-        <a routerLink="/detail/{{hero.id}}">
+        <a routerLink="/detail/hero/{{hero.id}}">
             <span class="badge">{{hero.id}}</span>{{hero.name}}
         </a><button type="button" class="delete" title="delete hero" (click)="delete(hero)">X</button>
     </li>

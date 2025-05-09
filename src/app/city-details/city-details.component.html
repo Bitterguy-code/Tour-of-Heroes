@@ -1,0 +1,17 @@
+<div *ngIf="city">
+    <h2>{{city.name | uppercase}} Details</h2>
+    <div class="ID">ID: </div><div>{{city.id}}</div>
+    <div>
+        <label for="city-name" class="label">city name: </label>
+        <input id="city-name" [(ngModel)]="city.name" placeholder="name">
+    </div>
+    <div class="ID city">Heroes:
+        <ul>
+            <li *ngFor="let hero of heroes" routerLink="/detail/hero/{{hero.id}}">
+                {{hero.name}}
+            </li>
+        </ul>
+    </div>
+    <button type="button" (click)="goBack()">Go back</button>
+    <button type="button" (click)="save()">Save</button>
+</div> 

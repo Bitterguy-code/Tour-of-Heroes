@@ -47,6 +47,7 @@ export class HeroService {
 
   getHero(id: number): Observable<Hero> {
     const url = `${this.heroesUrl}/${id}`;
+    console.log(url)
     return this.http.get<Hero>(url,{responseType: 'json'})
     .pipe(
       tap(_ => this.log(`fetched hero id=${id}`)), 
@@ -64,10 +65,9 @@ export class HeroService {
   }
 
   addHero(hero:Hero): Observable<Hero> {
-    console.log('hello')
     return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions)
     .pipe(
-      tap((newHero:Hero)=>this.log(`added hero w/ id=${newHero.id}`)),
+      tap((newHero:Hero) => this.log(`added hero w/ id=${newHero.id}`)),
       catchError(this.handleError<Hero>('addHero'))
     )
   }
@@ -75,10 +75,13 @@ export class HeroService {
   deleteHero(id:number): Observable<Hero> {
     const url = `${this.heroesUrl}/${id}`;
 
-    return this.http.delete<Hero>(url, this.httpOptions).pipe(tap(() => this.log(`deleted hero id=${id}`)), catchError(this.handleError<Hero>('deleteHero')));
+    return this.http.delete<Hero>(url, this.httpOptions)
+    .pipe(
+      tap(() => this.log(`deleted hero id=${id}`)), 
+      catchError(this.handleError<Hero>('deleteHero')));
   }
 
-  serachHeroes(term: string): Observable<Hero[]> {
+  searchHeroes(term: string): Observable<Hero[]> {
     if (!term.trim()) {
       return of([]);
     }

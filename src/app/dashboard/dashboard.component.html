@@ -1,5 +1,5 @@
 <h2>Top Heroes</h2>
-<div class="heroes-menu" *ngFor="let hero of heroes" routerLink="/detail/{{hero.id}}">
+<div class="heroes-menu" *ngFor="let hero of heroes" routerLink="/detail/hero/{{hero.id}}">
     
     <a>
         {{hero.name}} - {{cities[hero.city].name}}

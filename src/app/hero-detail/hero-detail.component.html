@@ -5,6 +5,7 @@
         <label for="hero-name" class="label">Hero name: </label>
         <input id="hero-name" [(ngModel)]="hero.name" placeholder="name">
     </div>
+    <div class="ID city">City: </div><div routerLink="/detail/city/{{cities[hero.city].id}}">{{cities[hero.city].name}}</div>
     <button type="button" (click)="goBack()">Go back</button>
     <button type="button" (click)="save()">Save</button>
 </div> 

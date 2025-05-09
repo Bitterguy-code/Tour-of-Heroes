@@ -37,17 +37,44 @@ export class CityService {
   }
 
   getCity(id: number): Observable<City> {
-    const url = `${this.citiesUrl}/id=${id}`
-    return this.http.get<City>(url, {responseType: 'json'})
+    const url = `${this.citiesUrl}/${id}`
+    console.log(url)
+    return this.http.get<City>(url)
     .pipe(
       tap(() => this.log(`fetched city id=${id}`)),
       catchError(this.handleError<City>(`getCity id=${id}`))
     )
   }
 
+  updateCity(city:City): Observable<any> {
+    const cityTarget = this.http.put(this.citiesUrl, city, this.httpOptions)
+    .pipe(
+      tap(() => this.log(`Updated city id=${city.id}`))
+    )
+    return cityTarget;
+  }
+
+  addCity(city:City): Observable<City> {
+    return this.http.post<City>(this.citiesUrl, city, this.httpOptions)
+    .pipe(
+      tap((newCity:City) => this.log(`added city w/ id ${newCity.id}`)),
+      catchError(this.handleError<City>('addCity'))
+    )
+  }
+
+  deleteCity(id:number): Observable<City> {
+    const url = `${this.citiesUrl}/${id}}`;
+
+    return this.http.delete<City>(url, this.httpOptions)
+    .pipe(
+      tap(() => this.log(`delete city id=${id}`)),
+      catchError(this.handleError<City>('delteCity'))
+    )
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      this.log(`${operation} failed: ${error}`);
+      this.log(`${operation} failed: ${error.message}`);
       return of(result as T);
     }
   }
